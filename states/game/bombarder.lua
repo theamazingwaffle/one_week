@@ -5,7 +5,7 @@ local HC = require "lib.HC"
 local Bomb = require "states.game.bomb"
 local Node = require "lib.node"
 
-local Bombs = class {
+local Bombarder = class {
 	init = function(self, name, parent)
 		self.name = name
 		self.parent = parent
@@ -15,8 +15,12 @@ local Bombs = class {
 	update = function(self, dt)
 		for i, bomb in ipairs(self.bombs) do
 			bomb:update(dt)
-			if bomb:getHealth() < 1 or bomb.pos.y > 800 then
-				self:removeBullet(i)
+			if not bomb:isActive() then
+				table.remove(self.bombs, i)
+			end
+
+			if (bomb.pos.y > 800) or (bomb.pos.x > 600) or (bomb.pos.x < 0) then
+				bomb:explode()
 			end
 		end
 	end,
@@ -39,20 +43,24 @@ local Bombs = class {
 		return false
 	end,
 
-	removeBullet = function(self, i)
-		table.remove(self.bombs, i)
-	end,
-
 	newBomb = function(self, pos, vel)
 		local vel = vel or  vector(0, 100)
-		table.insert(self.bombs, Bomb(pos, vel, "res/gfx/bomb.png", 4, HC.circle(pos.x, pos.y, 16)))
+		table.insert(self.bombs, Bomb(pos, vel, HC.circle(pos.x, pos.y, 32)))
 	end,
 
 	getBombs = function(self)
 		return self.bombs
 	end,
+
+	removeBomb = function(self, i)
+		table.remove(self.bombs, i)
+	end,
+
+	explodeBomb = function(self, bomb)
+		bomb:explode()
+	end,
 }
 
-Bombs:include(Node)
+Bombarder:include(Node)
 
-return Bombs
+return Bombarder
