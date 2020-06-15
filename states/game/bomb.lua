@@ -129,7 +129,6 @@ local Bomb = class {
 
 	draw = function(self)
 		self.state:draw(self)
-		self.shape:draw("line")
 	end,
 
 	getHealth = function(self)
