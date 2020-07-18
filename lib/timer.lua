@@ -26,12 +26,7 @@ function timer:hasEnded()
 	return self.clock <= 0
 end
 
--- the module
 return setmetatable(
-	{
-		new = new,
-	},
-	{
-		__call = function(_, ...) return new(...) end
-	}
+	{ new = new	},
+	{ __call = function(_, ...) return new(...) end }
 )

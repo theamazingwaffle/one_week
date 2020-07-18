@@ -136,7 +136,7 @@ local Bomb = class {
 	end,
 
 	getShape = function(self)
-		return table.copy(self.shape)
+		return self.shape
 	end,
 
 	collidesWith = function(self, shape)

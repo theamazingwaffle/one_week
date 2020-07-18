@@ -1,0 +1,9 @@
+#!/bin/sh
+
+PROJ="game"
+ARCH="${1:-win64}"
+
+rm -f love-"$ARCH"/"$PROJ".exe "$PROJ".love "$PROJ".zip
+zip -9 -r "$PROJ".love .
+cat love-"$ARCH"/love.exe "$PROJ".love > love-"$ARCH"/"$PROJ".exe
+zip -9 -r "$PROJ".zip love-"$ARCH"
